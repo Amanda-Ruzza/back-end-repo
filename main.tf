@@ -1,31 +1,20 @@
-resource "aws_s3_bucket" "my_state_bucket" {
-  bucket = "talent-academy-account_id-tfstates-amanda"
+resource "aws_s3_bucket" "my_project_bucket" {
+    bucket = "talent-academy-muay-thai4323"
 
-  versioning {
-    enabled = true
-  }
+    lifecycle {
+      prevent_destroy = true
+    }
 
-  lifecycle {
-    prevent_destroy = true
-  }
-
-  tags = {
-    Name        = "talent-academy-tfstates"
-    Environment = "Test"
-  }
+    tags = {
+        Name = "talent-academy-muay-thai4323"
+        Environment = "Test"
+    }
 }
-resource "aws_dynamodb_table" "terraform_lock_tbl" {
-  name           = "terraform-lock"
-  read_capacity  = 1
-  write_capacity = 1
-  hash_key       = "LockID"
 
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
+resource "aws_s3_bucket_versioning" "version_my_bucket" {
+  bucket = aws_s3_bucket.my_project_bucket.id
 
-  tags           = {
-    Name = "terraform-lock"
+  versioning_configuration {
+    status = "Enabled"
   }
 }
